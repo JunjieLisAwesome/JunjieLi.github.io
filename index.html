@@ -71,19 +71,69 @@
   <main class="main">
 
     <!-- Hero Section -->
-    <section id="hero" class="hero section dark-background">
+    <section id="hero" class="hero section dark-background" style="position: relative; overflow: hidden;">
 
-      <img src="assets/img/main_me.jpg" alt="" data-aos="fade-in" class="">
+  <!-- Matrix background canvas -->
+  <canvas id="matrix"></canvas>
 
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <h2>Junjie Li</h2><!--data-typed-items="Software Developer" -->
-        <p> 
-          <span class="typed" ></span>Software Developer</span>
-          <!-- span class="typed-cursor typed-cursor--blink" aria-hidden="true" --></span>
-          </p>
-      </div>
+  <div class="container" data-aos="fade-up" data-aos-delay="100" 
+       style="position: relative; z-index: 2; color: #0f0; text-align: center;">
+    <h2>Junjie Li</h2>
+    <p><span>Software Developer | Data Analyst | AI </span></p>
+  </div>
 
-    </section><!-- /Hero Section -->
+  <script>
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%\"'#&_(),.;:?!\\|{}<>[]^~";
+    const fontSize = 16;
+    const columns = Math.floor(window.innerWidth / fontSize);
+    const drops = Array.from({ length: columns }).map(() => Math.floor(Math.random() * -canvas.height / fontSize));
+
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.font = `${fontSize}px 'Courier New', monospace`;
+
+      drops.forEach((y, i) => {
+        const text = chars[Math.floor(Math.random() * chars.length)];
+        const brightness = Math.floor(Math.random() * 155) + 100;
+        ctx.fillStyle = `rgb(0, ${brightness}, 0)`;
+        ctx.fillText(text, i * fontSize, y * fontSize);
+
+        if (y * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        } else {
+          drops[i]++;
+        }
+      });
+
+      requestAnimationFrame(draw);
+    }
+    draw();
+  </script>
+
+  <style>
+    #matrix {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</section>
+
 
     <!-- About Section -->
     <section id="about" class="about section">
